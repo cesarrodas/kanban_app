@@ -1,6 +1,5 @@
 import uuid from 'node-uuid';
 import React from 'react';
-
 import Notes from './Notes.jsx';
 
 export default class App extends React.Component {
@@ -34,10 +33,21 @@ export default class App extends React.Component {
       <div>
         <button onClick={this.addNote}>+</button>
         
-        <Notes notes={notes} onEdit={this.editNote} />
+        <Notes notes={notes} 
+          onEdit={this.editNote}
+          onDelete={this.deleteNote} />
       </div>
     );
   }
+  
+  deleteNote = (id, e) => {
+    // Avoid bubbling to edit
+    e.stopPropagation();
+    
+    this.setState({
+      notes: this.state.notes.filter(note => note.id !== id)
+    });
+  };
   
   addNote = () => {
     this.setState({
@@ -64,6 +74,7 @@ export default class App extends React.Component {
     
     this.setState({notes});
   };
+  
 }
 
 // We can alter the state through setState
